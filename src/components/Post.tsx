@@ -1,4 +1,4 @@
-const About = () => {
+const Post = ({subjects}: any) => {
     return(
         <div>
             <h3 className={"text-blue-600 text-3xl my-5"}>Coming soon</h3>
@@ -6,4 +6,4 @@ const About = () => {
         </div>
     )
 }
-export default About
+export default Post

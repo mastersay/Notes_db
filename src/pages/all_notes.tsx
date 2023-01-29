@@ -1,20 +1,15 @@
-import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
 import Link from "next/link";
 import {getNotes} from "@/services";
 
 
-export default function Home({notes}: any) {
+export default function All_notes({notes, initialDisplayPosts, pagination}: any) {
     // noinspection SpellCheckingInspection
     return (
         <div>
-            <Head>
-                <title>Notes-db</title>
-            </Head>
             <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 <div className="space-y-2 pt-6 pb-8 md:space-y-5">
                     <h1 className="text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-                        Latest
+                        All notes
                     </h1>
                     <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
                         Newest added
@@ -22,7 +17,7 @@ export default function Home({notes}: any) {
                 </div>
                 <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                     {!notes.length && 'No posts found.'}
-                    {notes.slice(0, 5).map((frontMatter: { slug: string, title: string, topicPresentedOn: string, excerpt: string, subject: { subjectSlug: string, shorthand: string } }) => {
+                    {notes.slice(0, 10).map((frontMatter: { slug: string, title: string, topicPresentedOn: string, excerpt: string, subject: { subjectSlug: string, shorthand: string } }) => {
                         const {slug, title, topicPresentedOn, excerpt, subject} = frontMatter
                         const formattedDate = new Intl.DateTimeFormat("en-GB", {
                             year: "numeric",
@@ -77,7 +72,7 @@ export default function Home({notes}: any) {
                     })}
                 </ul>
             </div>
-            {notes.length > 5 && (
+            {notes.length > 10 && (
                 <div className="flex justify-end text-base font-medium leading-6">
                     <Link
                         href="all_notes.tsx"
@@ -90,10 +85,16 @@ export default function Home({notes}: any) {
         </div>
     )
 }
+export const POSTS_PER_PAGE = 5
 
 export async function getStaticProps() {
-    const notes = (await getNotes(6)) || []
+    const notes = (await getNotes(9999)) || []
+    const initialDisplayPosts = notes.slice(0, POSTS_PER_PAGE)
+    const pagination = {
+        currentPage: 1,
+        totalPages: Math.ceil(notes.length / POSTS_PER_PAGE),
+    }
     return {
-        props: {notes}
+        props: {notes, initialDisplayPosts, pagination}
     }
 }
