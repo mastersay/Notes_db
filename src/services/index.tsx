@@ -11,6 +11,9 @@ export const getSubjects = async () => {
                     shorthand
                     subjectSlug
                     subjectTitle
+                    posts {
+                        id
+                    }
                 }
             }
         }
@@ -18,7 +21,16 @@ export const getSubjects = async () => {
     const result = await request(graphqlAPI, query)
     return result.subjectsConnection.edges.map(({node}: { node: unknown }) => (node))
 }
-
+export const getSubjectsSlugs = async () => {
+    const query = gql`
+    query getSubjectSlugs {
+        subjects {
+            subjectSlug
+        }
+    }`
+    const result = await request(graphqlAPI, query)
+    return result.subjects
+}
 export const getNotes = async (limit: number = 5) => {
     const query = gql`
     query getNotes {
@@ -40,4 +52,25 @@ export const getNotes = async (limit: number = 5) => {
     }`
     const result = await request(graphqlAPI, query)
     return result.postsConnection.edges.map(({node}: { node: unknown }) => (node))
+}
+export const getNotesSlugs = async () => {
+    const query = gql`
+    query getNoteSlugs {
+        posts {
+            slug
+        }
+    }`
+    const result = await request(graphqlAPI, query)
+    return result.posts
+}
+export const getNote = async (note_slug: string) => {
+    const query = gql`
+        query getNotes ($note_slug: String){
+            post(where: {slug: $note_slug}, locales: sk) {
+                content
+                title
+            }
+        }`
+    const result = await request(graphqlAPI, query, {note_slug})
+    return result.post
 }

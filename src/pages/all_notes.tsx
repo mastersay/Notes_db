@@ -12,7 +12,7 @@ export default function All_notes({notes, initialDisplayPosts, pagination}: any)
                         All notes
                     </h1>
                     <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-                        Newest added
+
                     </p>
                 </div>
                 <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -40,13 +40,13 @@ export default function All_notes({notes, initialDisplayPosts, pagination}: any)
                                                 <div>
                                                     <h2 className="text-2xl font-bold leading-8 tracking-tight">
                                                         <Link
-                                                            href={`/blog/${slug}`}
+                                                            href={`/note/${slug}`}
                                                             className="text-gray-900 dark:text-gray-100">
                                                             {title}
                                                         </Link>
                                                     </h2>
                                                     <div className="flex flex-wrap">
-                                                        <Link href={`/subjects/${subject.subjectSlug}`}
+                                                        <Link href={`/subject/${subject.subjectSlug}`}
                                                               className={"mr-3 text-sm font-medium uppercase text-cyan-600 hover:text-cyan-700 dark:hover:text-cyan-400"}>
                                                             {subject.shorthand}
                                                         </Link>
@@ -58,7 +58,7 @@ export default function All_notes({notes, initialDisplayPosts, pagination}: any)
                                             </div>
                                             <div className="text-base font-medium leading-6">
                                                 <Link
-                                                    href={`/blog/${slug}`}
+                                                    href={`/note/${slug}`}
                                                     className="text-cyan-600 hover:text-cyan-700 dark:hover:text-cyan-400"
                                                     aria-label={`Read "${title}"`}>
                                                     Read more &rarr;

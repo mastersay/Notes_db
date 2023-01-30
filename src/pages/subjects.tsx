@@ -2,6 +2,7 @@ import {getSubjects} from "@/services"
 import Link from "next/link";
 
 const Subjects = ({subjects}: any) => {
+    // noinspection SpellCheckingInspection
     return (
         <div>
             <div
@@ -12,15 +13,15 @@ const Subjects = ({subjects}: any) => {
                     </h1>
                 </div>
                 <div className="flex max-w-lg flex-wrap">
-                    {subjects.map((subject: { shorthand: string, subjectSlug: string, subjectTitle: string }) => (
-                        <div key={subject.subjectTitle} className={"mt-2 mb-2 mr-5"}>
-                            <Link href={`/subjects/${subject.subjectSlug}`}
-                                  className={"mr-3 text-sm font-medium uppercase text-cyan-600 hover:text-cyan-700 dark:hover:text-cyan-400"}>
+                    {subjects.map((subject: { shorthand: string, subjectSlug: string, subjectTitle: string, posts: [unknown] }) => (
+                        <div key={subject.subjectTitle} className={"group mt-2 mb-2 mr-5"}>
+                            <Link href={`/subject/${subject.subjectSlug}`}
+                                  className={"mr-3 text-sm font-medium text-cyan-600 group-hover:text-cyan-700 dark:group-hover:text-cyan-400"}>
                                 {subject.shorthand}
                             </Link>
-                            <Link href={subject.subjectSlug}
-                                  className={"-ml-2 text-sm font-semibold uppercase text-gray-600 dark:text-gray-300"}>
-                                {`(${0})`}
+                            <Link href={`/subject/${subject.subjectSlug}`}
+                                  className={"-ml-2 text-sm font-semibold text-gray-600 dark:text-gray-300"}>
+                                {`(${subject.posts.length})`}
                             </Link>
                         </div>
                     ))}
