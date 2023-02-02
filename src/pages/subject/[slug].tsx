@@ -78,8 +78,8 @@ export default function All_notes({notes}: any) {
     )
 }
 
-// Get all notes carrying the search subject
-export async function getStaticProps({params}: any) {
+// Get all notes carrying the search subject based on client request
+export async function getServerSideProps({params}: any) {
     const notes = (await getNotes(9999, params.slug)) || []
     // const initialDisplayPosts = notes.slice(0, POSTS_PER_PAGE)
     // const pagination = {
@@ -89,15 +89,5 @@ export async function getStaticProps({params}: any) {
     return {
         // props: {notes, initialDisplayPosts, pagination}
         props: {notes}
-    }
-}
-
-// Dynamic redirect url
-export async function getStaticPaths() {
-    const subjectsSlugs = await getSubjectsSlugs()
-    return {
-        paths: subjectsSlugs.map((subject: { subjectSlug: string }) => (
-            {params: {slug: subject.subjectSlug}})),
-        fallback: false
     }
 }
