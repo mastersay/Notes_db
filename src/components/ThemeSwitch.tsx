@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
 import {useTheme} from 'next-themes'
 
+// Switch the themes button using React states
 const ThemeSwitch = () => {
     const [mounted, setMounted] = useState(false)
     const {theme, setTheme, resolvedTheme} = useTheme()

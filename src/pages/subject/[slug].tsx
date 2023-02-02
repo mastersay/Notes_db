@@ -1,7 +1,8 @@
 import Link from "next/link";
 import {getNotes, getSubjectsSlugs} from "@/services";
+import {POSTS_PER_PAGE} from "@/pages";
 
-
+// Dynamic redirect when searching specific subject notes
 export default function All_notes({notes}: any) {
     // noinspection SpellCheckingInspection
     return (
@@ -17,7 +18,8 @@ export default function All_notes({notes}: any) {
                 </div>
                 <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                     {!notes.length && 'No posts found.'}
-                    {notes.slice(0, 10).map((frontMatter: { slug: string, title: string, topicPresentedOn: string, excerpt: string, subject: { subjectSlug: string, shorthand: string } }) => {
+                    {/*Display all notes in searched subject*/}
+                    {notes.map((frontMatter: { slug: string, title: string, topicPresentedOn: string, excerpt: string, subject: { subjectSlug: string, shorthand: string } }) => {
                         const {slug, title, topicPresentedOn, excerpt, subject} = frontMatter
                         const formattedDate = new Intl.DateTimeFormat("en-GB", {
                             year: "numeric",
@@ -40,13 +42,13 @@ export default function All_notes({notes}: any) {
                                                 <div>
                                                     <h2 className="text-2xl font-bold leading-8 tracking-tight">
                                                         <Link
-                                                            href={`/blog/${slug}`}
+                                                            href={`/note/${slug}`}
                                                             className="text-gray-900 dark:text-gray-100">
                                                             {title}
                                                         </Link>
                                                     </h2>
                                                     <div className="flex flex-wrap">
-                                                        <Link href={`/subjects/${subject.subjectSlug}`}
+                                                        <Link href={`/subject/${subject.subjectSlug}`}
                                                               className={"mr-3 text-sm font-medium uppercase text-cyan-600 hover:text-cyan-700 dark:hover:text-cyan-400"}>
                                                             {subject.shorthand}
                                                         </Link>
@@ -58,7 +60,7 @@ export default function All_notes({notes}: any) {
                                             </div>
                                             <div className="text-base font-medium leading-6">
                                                 <Link
-                                                    href={`/blog/${slug}`}
+                                                    href={`/note/${slug}`}
                                                     className="text-cyan-600 hover:text-cyan-700 dark:hover:text-cyan-400"
                                                     aria-label={`Read "${title}"`}>
                                                     Read more &rarr;
@@ -72,32 +74,25 @@ export default function All_notes({notes}: any) {
                     })}
                 </ul>
             </div>
-            {notes.length > 10 && (
-                <div className="flex justify-end text-base font-medium leading-6">
-                    <Link
-                        href="all_notes.tsx"
-                        className="text-cyan-600 hover:text-cyan-700 dark:hover:text-cyan-400"
-                        aria-label="all posts">
-                        All Posts &rarr;
-                    </Link>
-                </div>
-            )}
         </div>
     )
 }
-export const POSTS_PER_PAGE = 5
 
-export async function getStaticProps({params}: { params: string }) {
-    const notes = (await getNotes(9999)) || []
-    const initialDisplayPosts = notes.slice(0, POSTS_PER_PAGE)
-    const pagination = {
-        currentPage: 1,
-        totalPages: Math.ceil(notes.length / POSTS_PER_PAGE),
-    }
+// Get all notes carrying the search subject
+export async function getStaticProps({params}: any) {
+    const notes = (await getNotes(9999, params.slug)) || []
+    // const initialDisplayPosts = notes.slice(0, POSTS_PER_PAGE)
+    // const pagination = {
+    //     currentPage: 1,
+    //     totalPages: Math.ceil(notes.length / POSTS_PER_PAGE),
+    // }
     return {
-        props: {notes, initialDisplayPosts, pagination}
+        // props: {notes, initialDisplayPosts, pagination}
+        props: {notes}
     }
 }
+
+// Dynamic redirect url
 export async function getStaticPaths() {
     const subjectsSlugs = await getSubjectsSlugs()
     return {

@@ -2,12 +2,17 @@ import {useState} from "react";
 import Link from "next/link";
 import ThemeSwitch from "./ThemeSwitch";
 
-const nav_data = [{title: "All notes", href: "/all_notes"}, {title: "Subjects", href: "/subjects"}, {title: "About", href: "/about"}]
+// Navbar items
+const nav_data = [{title: "All notes", href: "/all_notes"}, {title: "Subjects", href: "/subjects"}, {
+    title: "About",
+    href: "/about"
+}]
 
-
+// Header component to be included in every page
 const Header = () => {
     const [navShow, setNavShow] = useState(false)
 
+    // Mobile version toggle
     function onToggleNav() {
         setNavShow((status) => {
             if (status) {
@@ -31,6 +36,7 @@ const Header = () => {
                 </div>
             </Link>
             <div className={"flex items-center text-base leading-5"}>
+                {/*Navigation links*/}
                 <div className={"hidden sm:block"}>
                     {nav_data.map((nav_item) => (
                         <Link href={nav_item.href} key={nav_item.title}
@@ -39,8 +45,11 @@ const Header = () => {
                         </Link>
                     ))}
                 </div>
+
+                {/*Dark mode switch button*/}
                 <ThemeSwitch/>
-                {/*Mobile navigation*/}
+
+                {/*Mobile navigation will show on small devices, desktop version will be hidden*/}
                 <div className="sm:hidden">
                     <button type="button" className="ml-1 mr-1 h-8 w-8 rounded py-1" aria-label="Toggle Menu"
                             onClick={onToggleNav}>
@@ -66,12 +75,12 @@ const Header = () => {
                             </button>
                         </div>
                         <nav className="fixed mt-8 h-full">
+                            {/*Side rollout nav*/}
                             {nav_data.map((link) => (
                                 <div key={link.title} className="px-12 py-4">
                                     <Link href={link.href}
                                           className="text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
-                                          onClick={onToggleNav}
-                                    >
+                                          onClick={onToggleNav}>
                                         {link.title}
                                     </Link>
                                 </div>

@@ -2,14 +2,13 @@ import Head from 'next/head'
 import Link from "next/link";
 import {getNotes} from "@/services";
 
+export const POSTS_PER_PAGE = 5
 
 export default function Home({notes}: any) {
     // noinspection SpellCheckingInspection
     return (
         <div>
-            <Head>
-                <title>Notes-db</title>
-            </Head>
+            {/*Main part*/}
             <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 <div className="space-y-2 pt-6 pb-8 md:space-y-5">
                     <h1 className="text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
@@ -20,8 +19,9 @@ export default function Home({notes}: any) {
                     </p>
                 </div>
                 <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                    {/*Display initial notes with data*/}
                     {!notes.length && 'No posts found.'}
-                    {notes.slice(0, 5).map((frontMatter: { slug: string, title: string, topicPresentedOn: string, excerpt: string, subject: { subjectSlug: string, shorthand: string } }) => {
+                    {notes.slice(0, POSTS_PER_PAGE).map((frontMatter: { slug: string, title: string, topicPresentedOn: string, excerpt: string, subject: { subjectSlug: string, shorthand: string } }) => {
                         const {slug, title, topicPresentedOn, excerpt, subject} = frontMatter
                         const formattedDate = new Intl.DateTimeFormat("en-GB", {
                             year: "numeric",
@@ -76,7 +76,8 @@ export default function Home({notes}: any) {
                     })}
                 </ul>
             </div>
-            {notes.length > 5 && (
+            {/*Add 'all posts' button if many posts*/}
+            {notes.length > POSTS_PER_PAGE && (
                 <div className="flex justify-end text-base font-medium leading-6">
                     <Link
                         href="all_notes.tsx"
@@ -90,8 +91,9 @@ export default function Home({notes}: any) {
     )
 }
 
+// Call to the api get function
 export async function getStaticProps() {
-    const notes = (await getNotes(6)) || []
+    const notes = (await getNotes(POSTS_PER_PAGE + 1)) || []
     return {
         props: {notes}
     }

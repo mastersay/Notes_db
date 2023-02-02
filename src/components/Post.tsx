@@ -1,3 +1,5 @@
+
+// TODO: Finish Post component for easy to include integration
 const Post = ({subjects}: any) => {
     return(
         <div>

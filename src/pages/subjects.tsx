@@ -1,6 +1,7 @@
 import {getSubjects} from "@/services"
 import Link from "next/link";
 
+// Subjects page
 const Subjects = ({subjects}: any) => {
     // noinspection SpellCheckingInspection
     return (
@@ -13,6 +14,7 @@ const Subjects = ({subjects}: any) => {
                     </h1>
                 </div>
                 <div className="flex max-w-lg flex-wrap">
+                    {/*Loop over all subejcts to display them*/}
                     {subjects.map((subject: { shorthand: string, subjectSlug: string, subjectTitle: string, posts: [unknown] }) => (
                         <div key={subject.subjectTitle} className={"group mt-2 mb-2 mr-5"}>
                             <Link href={`/subject/${subject.subjectSlug}`}
@@ -33,6 +35,7 @@ const Subjects = ({subjects}: any) => {
 }
 export default Subjects
 
+// Call to the api get function
 export async function getStaticProps() {
     const subjects = (await getSubjects()) || []
     return {

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import {getNotes} from "@/services";
+import {POSTS_PER_PAGE} from "@/pages/index";
 
-
+// All notes page
 export default function All_notes({notes, initialDisplayPosts, pagination}: any) {
     // noinspection SpellCheckingInspection
     return (
@@ -12,12 +13,13 @@ export default function All_notes({notes, initialDisplayPosts, pagination}: any)
                         All notes
                     </h1>
                     <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-
+                        {/*TODO: Search bar */}
                     </p>
                 </div>
                 <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                     {!notes.length && 'No posts found.'}
-                    {notes.slice(0, 10).map((frontMatter: { slug: string, title: string, topicPresentedOn: string, excerpt: string, subject: { subjectSlug: string, shorthand: string } }) => {
+                    {/*Display pages with notes*/}
+                    {notes.slice(0, POSTS_PER_PAGE).map((frontMatter: { slug: string, title: string, topicPresentedOn: string, excerpt: string, subject: { subjectSlug: string, shorthand: string } }) => {
                         const {slug, title, topicPresentedOn, excerpt, subject} = frontMatter
                         const formattedDate = new Intl.DateTimeFormat("en-GB", {
                             year: "numeric",
@@ -72,7 +74,7 @@ export default function All_notes({notes, initialDisplayPosts, pagination}: any)
                     })}
                 </ul>
             </div>
-            {notes.length > 10 && (
+            {notes.length > POSTS_PER_PAGE && (
                 <div className="flex justify-end text-base font-medium leading-6">
                     <Link
                         href="all_notes.tsx"
@@ -85,8 +87,8 @@ export default function All_notes({notes, initialDisplayPosts, pagination}: any)
         </div>
     )
 }
-export const POSTS_PER_PAGE = 5
 
+// Get all posts and split them to multiple pages for readability
 export async function getStaticProps() {
     const notes = (await getNotes(9999)) || []
     const initialDisplayPosts = notes.slice(0, POSTS_PER_PAGE)
