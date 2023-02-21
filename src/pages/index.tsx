@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Link from "next/link";
 import {getNotes} from "@/services";
-
+import Script from "next/script";
+import GoogleAdsenseContainer from "@/components/GoogleAdsenseContainer";
 export const POSTS_PER_PAGE = 5
 
 export default function Home({notes}: any) {
@@ -87,6 +88,10 @@ export default function Home({notes}: any) {
                     </Link>
                 </div>
             )}
+            {/*Right side ADD*/}
+            <div className={"h-fit"}>
+
+            </div>
         </div>
     )
 }
