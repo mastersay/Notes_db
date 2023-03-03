@@ -8,7 +8,7 @@ const components = {Header}
 export default function All_notes({source}: any) {
     // noinspection SpellCheckingInspection
     return (
-        <div className="prose dark:text-white">
+        <div className="prose dark:prose-invert">
             {/*Display the md note content*/}
             <MDXRemote {...source} components={components}/>
         </div>

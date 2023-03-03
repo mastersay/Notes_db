@@ -90,6 +90,7 @@ export default function Home({notes}: any) {
             )}
             {/*Right side ADD*/}
             <div className={"h-fit"}>
+            <GoogleAdsenseContainer client={"ca-pub-5429283621438170"} slot={"9822374882"}></GoogleAdsenseContainer>
 
             </div>
         </div>
