@@ -60,10 +60,10 @@ export const getNotes = async (limit: number = 5, whereSlug: string = "") => {
     return result.postsConnection.edges.map(({node}: { node: unknown }) => (node))
 }
 
-export const getNotesSlugs = async () => {
+export const getNotesSlugs = async (limit: number = 5) => {
     const query = gql`
     query getNoteSlugs {
-        posts {
+        posts (first: ${limit}) {
             slug
         }
     }`

@@ -27,7 +27,7 @@ export async function getStaticProps({params}: any) {
 
 // Dynamic redirect url
 export async function getStaticPaths() {
-    const notesSlugs = await getNotesSlugs()
+    const notesSlugs = await getNotesSlugs(999)
     return {
         paths: notesSlugs.map((note: { slug: string }) => (
             {params: {slug: note.slug}})),
