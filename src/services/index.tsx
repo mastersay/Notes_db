@@ -40,7 +40,7 @@ export const getNotes = async (limit: number = 5, whereSlug: string = "") => {
     const where_search = `where: {subject: {subjectSlug: "${whereSlug}"}}`
     const query = gql`
     query getNotes {
-        postsConnection(orderBy: topicPresentedOn_DESC, first: ${limit}${whereSlug ? where_search : ""}) {
+        postsConnection(orderBy: topicPresentedOn_DESC, first: ${limit}${whereSlug ? where_search : ""}, locales: sk) {
             edges {
                 node {
                     slug

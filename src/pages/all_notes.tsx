@@ -18,7 +18,7 @@ export default function All_notes({notes_in, pagination}: any) {
             }
         } else {
             setNotes(notes_in.filter((note: any) => {
-                const searchContent = note.title + note.content + note.excerpt + note.subject
+                const searchContent = note.title + note.content + note.excerpt + note.subject.subjectTitle + note.subject.shorthand
                 return searchContent.toLowerCase().includes(searchValue.toLowerCase())
             }))
         }
