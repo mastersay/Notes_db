@@ -2,15 +2,27 @@ import Link from "next/link";
 import {getNotes} from "@/services";
 import {POSTS_PER_PAGE} from "@/pages/index";
 import {useState} from "react";
+import PagePagination from "@/components/PagePagination";
 
 // All notes page
-export default function All_notes({notes, initialDisplayPosts, pagination}: any) {
-    const [searchValue, setSearchValue] = useState('')
-    const filteredBlogPosts = notes.filter((frontMatter: any) => {
-        const searchContent = frontMatter.title + frontMatter.content + frontMatter.tag
-        return searchContent.toLowerCase().includes(searchValue.toLowerCase())
-    })
+export default function All_notes({notes_in, pagination}: any) {
+    const [notes, setNotes] = useState(notes_in)
+    const [currentPage, setCurrentPage] = useState(pagination.currentPage)
+    const notes_copy = Array.from(notes_in)
 
+    function handleSearch({target}: { target: EventTarget }) {
+        const searchValue = (target as HTMLButtonElement).value
+        if (searchValue == "") {
+            if (JSON.stringify(notes) !== JSON.stringify(notes_copy)) {
+                setNotes(notes_copy)
+            }
+        } else {
+            setNotes(notes_in.filter((note: any) => {
+                const searchContent = note.title + note.content + note.excerpt + note.subject
+                return searchContent.toLowerCase().includes(searchValue.toLowerCase())
+            }))
+        }
+    }
     // noinspection SpellCheckingInspection
     return (
         <div>
@@ -19,12 +31,11 @@ export default function All_notes({notes, initialDisplayPosts, pagination}: any)
                     <h1 className="text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
                         All notes
                     </h1>
-                    {/*TODO: Search bar */}
                     <div className="relative max-w-lg">
                         <input
                             aria-label="Search articles"
                             type="text"
-                            onChange={(userSearch) => setSearchValue(userSearch.target.value)}
+                            onChange={handleSearch}
                             placeholder="Search articles"
                             className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-cyan-600 focus:border-opacity-5 focus:ring-cyan-600 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100"
                         />
@@ -47,7 +58,7 @@ export default function All_notes({notes, initialDisplayPosts, pagination}: any)
                 <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                     {!notes.length && 'No posts found.'}
                     {/*Display pages with notes*/}
-                    {notes.slice(0, POSTS_PER_PAGE).map((frontMatter: { slug: string, title: string, topicPresentedOn: string, excerpt: string, subject: { subjectSlug: string, shorthand: string } }) => {
+                    {notes.slice((currentPage - 1) * POSTS_PER_PAGE, (currentPage - 1) * POSTS_PER_PAGE + POSTS_PER_PAGE).map((frontMatter: { slug: string, title: string, topicPresentedOn: string, excerpt: string, subject: { subjectSlug: string, shorthand: string } }) => {
                         const {slug, title, topicPresentedOn, excerpt, subject} = frontMatter
                         const formattedDate = new Intl.DateTimeFormat("en-GB", {
                             year: "numeric",
@@ -103,14 +114,8 @@ export default function All_notes({notes, initialDisplayPosts, pagination}: any)
                 </ul>
             </div>
             {notes.length > POSTS_PER_PAGE && (
-                <div className="flex justify-end text-base font-medium leading-6">
-                    <Link
-                        href="all_notes.tsx"
-                        className="text-cyan-600 hover:text-cyan-700 dark:hover:text-cyan-400"
-                        aria-label="all posts">
-                        All Posts &rarr;
-                    </Link>
-                </div>
+                <><PagePagination currentPage={currentPage} totalPages={pagination.totalPages}
+                                   setCurrentPage={setCurrentPage}/></>
             )}
         </div>
     )
@@ -118,13 +123,12 @@ export default function All_notes({notes, initialDisplayPosts, pagination}: any)
 
 // Get all posts and split them to multiple pages for readability
 export async function getStaticProps() {
-    const notes = (await getNotes(9999)) || []
-    const initialDisplayPosts = notes.slice(0, POSTS_PER_PAGE)
+    const notes_in = (await getNotes(9999)) || []
     const pagination = {
         currentPage: 1,
-        totalPages: Math.ceil(notes.length / POSTS_PER_PAGE),
+        totalPages: Math.ceil(notes_in.length / POSTS_PER_PAGE),
     }
     return {
-        props: {notes, initialDisplayPosts, pagination}
+        props: {notes_in, pagination}
     }
 }

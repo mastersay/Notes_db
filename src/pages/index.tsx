@@ -1,7 +1,5 @@
-import Head from 'next/head'
 import Link from "next/link";
 import {getNotes} from "@/services";
-import Script from "next/script";
 import GoogleAdsenseContainer from "@/components/GoogleAdsenseContainer";
 export const POSTS_PER_PAGE = 5
 
@@ -91,7 +89,6 @@ export default function Home({notes}: any) {
             {/*Right side ADD*/}
             <div className={"h-fit"}>
             <GoogleAdsenseContainer client={"ca-pub-5429283621438170"} slot={"9822374882"}></GoogleAdsenseContainer>
-
             </div>
         </div>
     )
