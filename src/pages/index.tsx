@@ -79,7 +79,7 @@ export default function Home({notes}: any) {
             {notes.length > POSTS_PER_PAGE && (
                 <div className="flex justify-end text-base font-medium leading-6">
                     <Link
-                        href="all_notes"
+                        href={"all_notes"}
                         className="text-cyan-600 hover:text-cyan-700 dark:hover:text-cyan-400"
                         aria-label="all posts">
                         All Posts &rarr;

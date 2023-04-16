@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {getNotes, getNotesSlugs, getSubjectsSlugs} from "@/services";
+import {getNotes} from "@/services";
 import {POSTS_PER_PAGE} from "@/pages";
 import {useRouter} from "next/router";
 // Dynamic redirect when searching specific subject notes
