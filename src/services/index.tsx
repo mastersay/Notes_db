@@ -21,7 +21,7 @@ export const getSubjects = async () => {
             }
         }
     }`
-    const result = await request(graphqlAPI, query)
+    const result: any = await request(graphqlAPI, query)
     return result.subjectsConnection.edges.map(({node}: { node: unknown }) => (node))
 }
 
@@ -32,12 +32,12 @@ export const getSubjectsSlugs = async () => {
             subjectSlug
         }
     }`
-    const result = await request(graphqlAPI, query)
+    const result: any = await request(graphqlAPI, query)
     return result.subjects
 }
 
 export const getNotes = async (limit: number = 5, whereSlug: string = "") => {
-    let check_result = null
+    let check_result: any = null
     if (whereSlug != "") {
         // Check if searched slug exists
         const check_query = gql`
@@ -72,8 +72,8 @@ export const getNotes = async (limit: number = 5, whereSlug: string = "") => {
             }
         }
     }`
-    const result = await request(graphqlAPI, query)
-    if(!check_result){
+    const result: any = await request(graphqlAPI, query)
+    if (!check_result) {
         return result.postsConnection.edges.map(({node}: { node: unknown }) => (node))
     }
     return {
@@ -89,7 +89,7 @@ export const getNotesSlugs = async (limit: number = 5) => {
             slug
         }
     }`
-    const result = await request(graphqlAPI, query)
+    const result: any = await request(graphqlAPI, query)
     return result.posts
 }
 
@@ -101,6 +101,6 @@ export const getNote = async (note_slug: string) => {
                 title
             }
         }`
-    const result = await request(graphqlAPI, query, {note_slug})
+    const result: any = await request(graphqlAPI, query, {note_slug})
     return result.post
 }
