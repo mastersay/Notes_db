@@ -98,6 +98,6 @@ export default function Home({notes}: any) {
 export async function getStaticProps() {
     const notes = (await getNotes(POSTS_PER_PAGE + 1)) || []
     return {
-        props: {notes}
+        props: {notes}, revalidate: 3600
     }
 }

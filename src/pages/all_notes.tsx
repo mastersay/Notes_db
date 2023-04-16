@@ -123,12 +123,12 @@ export default function All_notes({notes_in, pagination}: any) {
 
 // Get all posts and split them to multiple pages for readability
 export async function getStaticProps() {
-    const notes_in = (await getNotes(9999)) || []
+    const notes_in = await getNotes(9999) || []
     const pagination = {
         currentPage: 1,
         totalPages: Math.ceil(notes_in.length / POSTS_PER_PAGE),
     }
     return {
-        props: {notes_in, pagination}
+        props: {notes_in, pagination}, revalidate: 60
     }
 }

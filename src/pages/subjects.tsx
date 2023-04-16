@@ -17,11 +17,11 @@ const Subjects = ({subjects}: any) => {
                     {/*Loop over all subejcts to display them*/}
                     {subjects.map((subject: { shorthand: string, subjectSlug: string, subjectTitle: string, posts: [unknown] }) => (
                         <div key={subject.subjectTitle} className={"group mt-2 mb-2 mr-5"}>
-                            <Link href={`/subject/${subject.subjectSlug}`}
+                            <Link href={`/subject/${subject.subjectSlug}`} prefetch={false}
                                   className={"mr-3 text-sm font-medium text-cyan-600 group-hover:text-cyan-700 dark:group-hover:text-cyan-400"}>
                                 {subject.shorthand}
                             </Link>
-                            <Link href={`/subject/${subject.subjectSlug}`}
+                            <Link href={`/subject/${subject.subjectSlug}`} prefetch={false}
                                   className={"-ml-2 text-sm font-semibold text-gray-600 dark:text-gray-300"}>
                                 {`(${subject.posts.length})`}
                             </Link>
@@ -39,6 +39,6 @@ export default Subjects
 export async function getStaticProps() {
     const subjects = (await getSubjects()) || []
     return {
-        props: {subjects}
+        props: {subjects}, revalidate: 60
     }
 }

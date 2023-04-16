@@ -1,25 +1,36 @@
 import Link from "next/link";
-import {getNotes, getSubjectsSlugs} from "@/services";
+import {getNotes, getNotesSlugs, getSubjectsSlugs} from "@/services";
 import {POSTS_PER_PAGE} from "@/pages";
-
+import {useRouter} from "next/router";
 // Dynamic redirect when searching specific subject notes
-export default function All_notes({notes}: any) {
+export default function All_notes({notes, subject}: any) {
+    const router = useRouter()
+    if (router.isFallback) {
+        return (
+            <div className={"mt-64 flex justify-center content-center divide-y divide-gray-200 dark:divide-gray-700"}>
+                Loading...
+            </div>
+        )
+    }
     // noinspection SpellCheckingInspection
     return (
         <div>
             <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 <div className="space-y-2 pt-6 pb-8 md:space-y-5">
                     <h1 className="text-3xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-                        {notes[0].subject.shorthand}
+                        {subject.shorthand}
                     </h1>
-                    <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-
-                    </p>
                 </div>
                 <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                     {!notes.length && 'No posts found.'}
                     {/*Display all notes in searched subject*/}
-                    {notes.map((frontMatter: { slug: string, title: string, topicPresentedOn: string, excerpt: string, subject: { subjectSlug: string, shorthand: string } }) => {
+                    {notes.map((frontMatter: {
+                        slug: string,
+                        title: string,
+                        topicPresentedOn: string,
+                        excerpt: string,
+                        subject: { subjectSlug: string, shorthand: string }
+                    }) => {
                         const {slug, title, topicPresentedOn, excerpt, subject} = frontMatter
                         const formattedDate = new Intl.DateTimeFormat("en-GB", {
                             year: "numeric",
@@ -79,15 +90,24 @@ export default function All_notes({notes}: any) {
 }
 
 // Get all notes carrying the search subject based on client request
-export async function getServerSideProps({params}: any) {
-    const notes = (await getNotes(9999, params.slug)) || []
-    // const initialDisplayPosts = notes.slice(0, POSTS_PER_PAGE)
-    // const pagination = {
-    //     currentPage: 1,
-    //     totalPages: Math.ceil(notes.length / POSTS_PER_PAGE),
-    // }
+export async function getStaticProps({params}: any) {
+    const data = await getNotes(9999, params.slug)
+    if (data === null) {
+        return {notFound: true}
+    }
+    const {notes, subject} = data
+    const pagination = {
+        currentPage: 1,
+        totalPages: Math.ceil(notes.length / POSTS_PER_PAGE),
+    }
     return {
-        // props: {notes, initialDisplayPosts, pagination}
-        props: {notes}
+        props: {notes, subject, pagination}, revalidate: 360
+    }
+}
+
+export async function getStaticPaths() {
+    return {
+        paths: [],
+        fallback: true
     }
 }

@@ -18,10 +18,13 @@ export default function All_notes({source}: any) {
 // Call to the api get function
 export async function getStaticProps({params}: any) {
     const note = await getNote(params.slug)
+    if (!note) {
+        return {notFound: true}
+    }
     // Serialize the md string
     const mdxSource = await serialize(note.content)
     return {
-        props: {source: mdxSource}
+        props: {source: mdxSource}, revalidate: 3600
     }
 }
 
@@ -31,6 +34,6 @@ export async function getStaticPaths() {
     return {
         paths: notesSlugs.map((note: { slug: string }) => (
             {params: {slug: note.slug}})),
-        fallback: false
+        fallback: "blocking"
     }
 }
