@@ -1,6 +1,10 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Link from "next/link";
 import ThemeSwitch from "./ThemeSwitch";
+import Image from "next/image";
+import logo from "@/assets/logo/Notes db_logo_light_mode.svg"
+import logo_dark from "@/assets/logo/Notes db_logo_dark_mode.svg"
+import {useTheme} from 'next-themes'
 
 // Navbar items
 const nav_data = [{title: "All notes", href: "/all_notes"}, {title: "Subjects", href: "/subjects"}, {
@@ -11,6 +15,9 @@ const nav_data = [{title: "All notes", href: "/all_notes"}, {title: "Subjects", 
 // Header component to be included in every page
 const Header = () => {
     const [navShow, setNavShow] = useState(false)
+    const [mounted, setMounted] = useState(false)
+    const {theme, resolvedTheme} = useTheme()
+    useEffect(() => setMounted(true), [])
 
     // Mobile version toggle
     function onToggleNav() {
@@ -27,13 +34,11 @@ const Header = () => {
     // noinspection SpellCheckingInspection
     return (
         <div className={"flex items-center justify-between py-10"}>
-            <Link href={"/"} aria-label={"Notes db"}>
-                <div className={"flex items-center justify-between"}>
-                    <div className={"mr-3"}>
-                        {/*Logo */}
-                    </div>
-                    <p className={"h-6 text-2xl font-semibold"}>Notes db</p>
-                </div>
+            {/*Link with logo image here*/}
+            <Link href={"/"} aria-label={"Notes db"} className={"h-8 flex align-middle"}>
+                {mounted && (theme === 'dark' || resolvedTheme === 'dark') ?
+                    <Image src={logo_dark} alt={"Notes db logo"}
+                           className={"w-auto h-auto"}/> : <Image src={logo} alt={"Notes db logo"}/>}
             </Link>
             <div className={"flex items-center text-base leading-5"}>
                 {/*Navigation links*/}

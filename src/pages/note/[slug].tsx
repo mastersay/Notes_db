@@ -3,8 +3,10 @@ import {serialize} from "next-mdx-remote/serialize";
 import {MDXRemote} from "next-mdx-remote"
 import Header from "@/components/Header";
 
-// Dynamic redirect to this file if you want to display .md/.mdx file
+// Custom components for rendering MDX content
 const components = {Header}
+
+// Component function that renders MDX content
 export default function All_notes({source}: any) {
     // noinspection SpellCheckingInspection
     return (
@@ -15,20 +17,22 @@ export default function All_notes({source}: any) {
     )
 }
 
-// Call to the api get function
+// Fetch note data
 export async function getStaticProps({params}: any) {
+    // Get note data based on the slug parameter
     const note = await getNote(params.slug)
+    // If note is not found, return a 404 error
     if (!note) {
         return {notFound: true}
     }
-    // Serialize the md string
+    // Serialize the MDX string
     const mdxSource = await serialize(note.content)
     return {
         props: {source: mdxSource}, revalidate: 3600
     }
 }
 
-// Dynamic redirect url
+// Generate dynamic paths for getStaticPaths
 export async function getStaticPaths() {
     const notesSlugs = await getNotesSlugs(999)
     return {

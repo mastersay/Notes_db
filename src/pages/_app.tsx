@@ -12,6 +12,8 @@ export default function App({Component, pageProps}: AppProps) {
         <ThemeProvider attribute={"class"}>
             <Head>
                 <title>Notes-db</title>
+                {/*Google verification for search engines*/}
+                <meta name="google-site-verification" content="wW1kFaT-aM-zoooBrEpO61bSOlMHi659ergbUqJ7KVA" />
                 <Script async
                         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5429283621438170"
                         crossOrigin="anonymous"/>
