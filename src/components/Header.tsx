@@ -38,7 +38,7 @@ const Header = () => {
             <Link href={"/"} aria-label={"Notes db"} className={"h-8 flex align-middle"}>
                 {mounted && (theme === 'dark' || resolvedTheme === 'dark') ?
                     <Image src={logo_dark} alt={"Notes db logo"}
-                           className={"w-auto h-auto"}/> : <Image src={logo} alt={"Notes db logo"}/>}
+                           className={"w-auto h-auto"}/> : <Image src={logo} alt={"Notes db logo"} className={"w-auto h-auto"}/>}
             </Link>
             <div className={"flex items-center text-base leading-5"}>
                 {/*Navigation links*/}
