@@ -28,7 +28,7 @@ export async function getStaticProps({params}: any) {
     // Serialize the MDX string
     const mdxSource = await serialize(note.content)
     return {
-        props: {source: mdxSource}, revalidate: 3600
+        props: {source: mdxSource}, revalidate: 60
     }
 }
 

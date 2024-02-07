@@ -101,7 +101,7 @@ export async function getStaticProps({params}: any) {
         totalPages: Math.ceil(notes.length / POSTS_PER_PAGE),
     }
     return {
-        props: {notes, subject, pagination}, revalidate: 360
+        props: {notes, subject, pagination}, revalidate: 60
     }
 }
 
